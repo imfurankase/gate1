@@ -65,6 +65,35 @@ def check_out_visitor(request, visitor_id):
     movement.save()
     messages.success(request, 'Visitor checked out successfully.')
     return redirect('records:movements')
+def checkout_visitor(request):
+    if request.method == 'POST':
+        card_number = request.POST.get('cardNumber')
+        try:
+            visitor = Visitor.objects.get(card__number=card_number)
+            movement = Movement.objects.create(
+                visitor=visitor,
+                time_in=visitor.movements.latest('time_in').time_in,
+                time_out=timezone.now(),
+            )
+            return JsonResponse({'success': True})
+        except Visitor.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Visitor not found'})
+    return JsonResponse({'success': False, 'message': 'Invalid request'})
+
+def card_reader_interaction(request):
+    if request.method == 'POST':
+        card_number = request.POST.get('cardNumber')
+        try:
+            visitor = Visitor.objects.get(card__number=card_number)
+            movement = Movement.objects.create(
+                visitor=visitor,
+                time_in=visitor.movements.latest('time_in').time_in,
+                time_out=timezone.now(),
+            )
+            return JsonResponse({'success': True})
+        except Visitor.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Visitor not found'})
+    return JsonResponse({'success': False, 'message': 'Invalid request'})
 
 @login_required
 # @group_required('Supervisor')

@@ -13,6 +13,8 @@
         <!-- Replace 'YOUR_ANIMATED_SVG_LINK' with the actual link to your animated SVG -->
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/BMW_logo_%28gray%29.svg/270px-BMW_logo_%28gray%29.svg.png" alt="Card Reader Animation" />
       </div>
+      <input type="text" id="card-reader-input" >
+
     </div>
   </div>
 </div>
@@ -247,37 +249,3 @@
 </main>
 
 {% endblock content %}
-{% block javascript %}
-<script>
-  // Handle card reader interaction
-  document.getElementById('card-reader-btn').addEventListener('click', function() {
-    // Show the card reader modal
-    const cardReaderModal = new bootstrap.Modal(document.getElementById('cardReaderModal'));
-    cardReaderModal.show();
-  });
-
-  // Handle card tapped event
-  function onCardTapped(cardNumber) {
-    // Find the checkout button with the corresponding card number
-    const checkoutBtn = document.querySelector(`[data-card-number="${cardNumber}"]`);
-
-    // Trigger the checkout process for the corresponding visitor
-    if (checkoutBtn) {
-      checkoutBtn.click();
-    } else {
-      alert('No visitor found with the provided card number.');
-    }
-
-    // Close the card reader modal
-    const cardReaderModal = new bootstrap.Modal(document.getElementById('cardReaderModal'));
-    cardReaderModal.hide();
-  }
-
-  // Simulate card reader interaction
-  // Here, you can implement the logic to trigger the card reader and get the card number
-  // Replace the "CARD_NUMBER_FROM_CARD_READER" with the actual card number received from the card reader
-  const cardNumber = "CARD_NUMBER_FROM_CARD_READER";
-  onCardTapped(cardNumber); // Simulate tapping the card and trigger the checkout process
-
-</script>
-{% endblock %}
