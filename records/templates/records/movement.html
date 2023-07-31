@@ -2,6 +2,20 @@
 
 {% load static %}
 {% block content %}
+<div class="modal" id="cardReaderModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Card Reader Animation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Replace 'YOUR_ANIMATED_SVG_LINK' with the actual link to your animated SVG -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/BMW_logo_%28gray%29.svg/270px-BMW_logo_%28gray%29.svg.png" alt="Card Reader Animation" />
+      </div>
+    </div>
+  </div>
+</div>
 <main class="main-wrapper">
 <header class="header">
     <div class="container-fluid">
@@ -142,6 +156,18 @@
     </div>
   </header>
   <!-- ========== header end ========== -->
+   <!-- Add the big button for card reader interaction -->
+   <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card-style mb-30">
+          <button id="card-reader-btn" class="main-btn primary-btn btn-hover">
+            Tap Card to Check Out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 <section class="table-components">
     <!-- <div class="container-fluid"> -->
         <div class="tables-wrapper">
@@ -221,3 +247,37 @@
 </main>
 
 {% endblock content %}
+{% block javascript %}
+<script>
+  // Handle card reader interaction
+  document.getElementById('card-reader-btn').addEventListener('click', function() {
+    // Show the card reader modal
+    const cardReaderModal = new bootstrap.Modal(document.getElementById('cardReaderModal'));
+    cardReaderModal.show();
+  });
+
+  // Handle card tapped event
+  function onCardTapped(cardNumber) {
+    // Find the checkout button with the corresponding card number
+    const checkoutBtn = document.querySelector(`[data-card-number="${cardNumber}"]`);
+
+    // Trigger the checkout process for the corresponding visitor
+    if (checkoutBtn) {
+      checkoutBtn.click();
+    } else {
+      alert('No visitor found with the provided card number.');
+    }
+
+    // Close the card reader modal
+    const cardReaderModal = new bootstrap.Modal(document.getElementById('cardReaderModal'));
+    cardReaderModal.hide();
+  }
+
+  // Simulate card reader interaction
+  // Here, you can implement the logic to trigger the card reader and get the card number
+  // Replace the "CARD_NUMBER_FROM_CARD_READER" with the actual card number received from the card reader
+  const cardNumber = "CARD_NUMBER_FROM_CARD_READER";
+  onCardTapped(cardNumber); // Simulate tapping the card and trigger the checkout process
+
+</script>
+{% endblock %}
